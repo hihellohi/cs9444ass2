@@ -27,7 +27,8 @@ def generate_batch(data, batch_size, skip_window):
     for i in range(batch_size):
         target = skip_window  # target label at the center of the buffer
         labels[i] = buffer[target]
-        batch[i] = buffer[:target] + buffer[target + 1:]
+        for count, k in enumerate([j for j in range(span) if j != target]):
+            batch[i, count] = buffer[k]
 
         if data_index == len(data):
             # reached the end of the data, start again
